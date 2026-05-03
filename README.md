@@ -1,12 +1,36 @@
-# SSHGPU
+<p align="center">
+  <img src="build/banner.png" alt="SSHGPU" width="100%">
+</p>
 
-A macOS menu bar application for monitoring remote GPU servers via SSH. Click the tray icon to see GPU utilization, system stats, and task status across all your servers at a glance.
+<p align="center">
+  <strong>macOS menu bar app for monitoring remote GPU servers via SSH</strong>
+</p>
+
+<p align="center">
+  <a href="#features">Features</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#usage">Usage</a> •
+  <a href="#configuration">Configuration</a> •
+  <a href="#development">Development</a> •
+  <a href="#contributing">Contributing</a> •
+  <a href="README_zh.md">中文文档</a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/platform-macOS-blue" alt="Platform">
+  <img src="https://img.shields.io/badge/electron-28-blue" alt="Electron">
+  <img src="https://img.shields.io/badge/react-18-blue" alt="React">
+  <img src="https://img.shields.io/badge/typescript-5.3-blue" alt="TypeScript">
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="License">
+</p>
+
+---
 
 ## Features
 
 - **GPU Monitoring** — Per-GPU utilization %, memory, temperature, and process list
-- **Three Visual States** — Active (default), Idle (low util, memory occupied), Available (low util, memory freed)
-- **Utilization History** — SVG sparkline charts showing the last 60 polling cycles per GPU
+- **Three Visual States** — Active, Idle (memory occupied), Available (memory freed)
+- **Utilization History** — SVG sparkline charts showing the last 60 polling cycles
 - **Task Monitoring** — SLURM `squeue` and `ps aux` with running/history tabs
 - **Notifications** — macOS native + DingTalk webhook when GPUs become idle
 - **Dark Mode** — System preference auto-detect + manual toggle
@@ -24,7 +48,7 @@ Download the latest `.dmg` from [Releases](../../releases) and drag SSHGPU to Ap
 ### Build from Source
 
 ```bash
-git clone https://github.com/your-username/sshgpu.git
+git clone https://github.com/zhouzhengqd/sshgpu.git
 cd sshgpu
 npm install
 npm run package
@@ -32,7 +56,7 @@ npm run package
 
 Output: `release/SSHGPU-{version}.dmg`
 
-## Prerequisites for Monitored Servers
+## Prerequisites
 
 Remote servers need:
 - SSH access with key-based authentication configured in `~/.ssh/config`
@@ -97,7 +121,7 @@ src/
     index.ts               # App entry, event wiring
     collector.ts           # SSH data collection
     store.ts               # In-memory data store
-    history-store.ts       # Persistent task history (electron-store)
+    history-store.ts       # Persistent task history
     utilization-history.ts # Ring buffer for sparklines (60 pts)
     notifier.ts            # Idle GPU notifications
     dingtalk.ts            # DingTalk webhook
@@ -131,6 +155,8 @@ npm run test:watch    # Watch mode
 
 ## Contributing
 
+Contributions are welcome! Please feel free to submit a Pull Request.
+
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
 3. Run tests (`npm test`)
@@ -141,3 +167,9 @@ npm run test:watch    # Watch mode
 ## License
 
 MIT
+
+## Acknowledgments
+
+This project was built with the support of [MIMO](https://mimo.dev)'s billion-token subsidy program, which provided the AI coding assistance needed to bring SSHGPU from concept to completion.
+
+Special thanks to all contributors and the open source community.
