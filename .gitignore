@@ -1,0 +1,16 @@
+node_modules/
+dist/
+release/
+*.dmg
+.DS_Store
+.env
+.env.*
+*.pem
+*.key
+.claude/
+.worktrees/
+build/generate_icon.py
+build/generate_pixel_icon.py
+build/icon_1024.png
+FUNCTIONAL_TEST_REPORT.md
+docs/superpowers/

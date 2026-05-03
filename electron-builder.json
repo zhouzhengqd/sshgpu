@@ -1,0 +1,17 @@
+{
+  "appId": "com.sshgpu.app",
+  "productName": "SSHGPU",
+  "mac": {
+    "target": "dmg",
+    "icon": "build/icon.icns",
+    "category": "public.app-category.developer-tools"
+  },
+  "directories": {
+    "output": "release"
+  },
+  "files": [
+    "dist/**/*",
+    "node_modules/**/*"
+  ],
+  "extraResources": []
+}
