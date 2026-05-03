@@ -2,31 +2,47 @@
 
 Electron app for monitoring remote GPU servers via SSH, displayed as a macOS menu bar popover. Click the tray icon to see GPU utilization, system stats, and task status across all your servers at a glance.
 
+**GitHub**: https://github.com/zhouzhengqd/sshgpu
+
+## Quick Start (Agent Setup)
+
+```bash
+# 1. Clone
+git clone https://github.com/zhouzhengqd/sshgpu.git
+cd sshgpu
+
+# 2. Install dependencies
+npm install
+
+# 3. Development (hot reload)
+npm run dev
+
+# 4. Run tests
+npm test
+
+# 5. Build production
+npm run build
+
+# 6. Package as .dmg
+npm run package
+```
+
 ## Prerequisites
 
 - macOS (menu bar app)
-- Node.js >= 18
-- npm >= 9
+- Node.js >= 18 (includes npm)
 - SSH access configured in `~/.ssh/config` with key-based authentication
 - Remote servers must have `nvidia-smi` installed (GPU monitoring), `squeue` (SLURM, optional), `conda` (env listing, optional)
 
-## Installation
+## Development Commands
 
-```bash
-git clone <repo-url> sshgpu
-cd sshgpu
-npm install
-```
-
-## Development
-
-```bash
-npm run dev          # Start dev server + Electron (hot reload)
-npm run build        # Production build (main + renderer)
-npm run build:main   # Build main process only (fast iteration)
-npm test             # Run all tests (34 tests, 7 test files)
-npm run package      # Package as .dmg via electron-builder
-```
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start dev server + Electron (hot reload) |
+| `npm run build` | Production build (main + renderer) |
+| `npm run build:main` | Build main process only (fast iteration) |
+| `npm test` | Run all tests (34 tests, 7 test files) |
+| `npm run package` | Build + package as .dmg (auto-runs build first via `prepackage` script) |
 
 The dev command runs three processes concurrently:
 1. Vite dev server on port 5173 (renderer hot reload)
@@ -133,8 +149,8 @@ Settings are stored via `electron-store` at `~/Library/Application Support/sshgp
 
 | Setting | Default | Description |
 |---------|---------|-------------|
-| `pollingInterval` | 3 | Seconds between data refreshes |
-| `idleThreshold` | 5 | Minutes before GPU considered idle |
+| `pollingInterval` | 120 | Seconds between data refreshes |
+| `idleThreshold` | 30 | Minutes before GPU considered idle |
 | `idleUtilizationThreshold` | 5 | GPU utilization % below which is idle |
 | `notificationEnabled` | true | Enable macOS notifications |
 | `quietHoursStart` | "22:00" | Notification quiet hours start |
@@ -162,12 +178,12 @@ Test files mirror source structure under `tests/`:
 ## Packaging
 
 ```bash
-npm run package       # Build + package as .dmg via electron-builder
+npm run package       # Build + package as .dmg (prepackage script auto-runs build)
 ```
 
 Output: `release/SSHGPU-{version}.dmg`
 
-Requires `build/icon.icns` for the app icon (not yet provided — uses default Electron icon).
+App icon is at `build/icon.icns`.
 
 ## Problems Encountered & Solutions
 
@@ -226,3 +242,7 @@ Requires `build/icon.icns` for the app icon (not yet provided — uses default E
 ### 14. Sparkline Chart Not Visible
 **Problem**: Chart didn't render - useEffect only depended on `server?.id`, not data updates.
 **Solution**: Added `server?.lastUpdated` as useEffect dependency. Chart needs 2+ polling cycles to render.
+
+### 15. Packaging Failed on Clean Clone
+**Problem**: `npm run package` failed because `dist/` is gitignored and electron-builder couldn't find build output.
+**Solution**: Added `prepackage` script to package.json that runs `npm run build` automatically before packaging.
