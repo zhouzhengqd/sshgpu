@@ -175,6 +175,8 @@ MIT
 
 ## 致谢
 
-本项目在 [MIMO](https://mimo.dev) 百亿 Token 补贴计划的支持下完成，该计划提供了 AI 编程辅助，帮助 SSHGPU 从概念走向实现。
+本项目在 [MIMO](https://100t.xiaomimimo.com/) 百亿 Token 补贴计划的支持下完成，该计划提供了 AI 编程辅助，帮助 SSHGPU 从概念走向实现。
+
+> 邀请码：`NNRLFS` — 可领取 10 元免费额度
 
 感谢所有贡献者和开源社区。

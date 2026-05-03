@@ -175,6 +175,8 @@ MIT
 
 ## Acknowledgments
 
-This project was built with the support of [MIMO](https://mimo.dev)'s billion-token subsidy program, which provided the AI coding assistance needed to bring SSHGPU from concept to completion.
+This project was built with the support of [MIMO](https://100t.xiaomimimo.com/)'s billion-token subsidy program, which provided the AI coding assistance needed to bring SSHGPU from concept to completion.
+
+> Invite code: `NNRLFS` — get ¥10 free credits
 
 Special thanks to all contributors and the open source community.
