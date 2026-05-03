@@ -12,6 +12,7 @@
     "build:main": "esbuild src/main/index.ts src/main/preload.ts --bundle --platform=node --outdir=dist/main --external:electron --external:ssh2 --external:electron-store --format=cjs",
     "test": "vitest run",
     "test:watch": "vitest",
+    "prepackage": "npm run build",
     "package": "electron-builder --mac"
   },
   "dependencies": {
