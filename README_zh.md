@@ -47,6 +47,11 @@
 
 ### 从源码构建
 
+前置条件：
+- macOS 系统
+- [Node.js](https://nodejs.org/) >= 18（自带 npm）
+- 已配置基于密钥的 SSH 认证访问远程服务器
+
 ```bash
 git clone https://github.com/zhouzhengqd/sshgpu.git
 cd sshgpu
@@ -56,9 +61,9 @@ npm run package
 
 输出文件：`release/SSHGPU-{version}.dmg`
 
-## 前置条件
+## 远程服务器要求
 
-远程服务器需要：
+被监控的服务器需要：
 - 在 `~/.ssh/config` 中配置基于密钥的 SSH 认证
 - 安装 `nvidia-smi`（GPU 监控）
 - 安装 `squeue`（SLURM，可选 — 无则回退到 `ps aux`）

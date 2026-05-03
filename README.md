@@ -47,6 +47,11 @@ Download the latest `.dmg` from [Releases](../../releases) and drag SSHGPU to Ap
 
 ### Build from Source
 
+Prerequisites:
+- macOS
+- [Node.js](https://nodejs.org/) >= 18 (includes npm)
+- SSH access to remote servers with key-based authentication
+
 ```bash
 git clone https://github.com/zhouzhengqd/sshgpu.git
 cd sshgpu
@@ -56,9 +61,9 @@ npm run package
 
 Output: `release/SSHGPU-{version}.dmg`
 
-## Prerequisites
+## Remote Server Requirements
 
-Remote servers need:
+Servers to monitor need:
 - SSH access with key-based authentication configured in `~/.ssh/config`
 - `nvidia-smi` installed (GPU monitoring)
 - `squeue` (SLURM, optional — falls back to `ps aux`)
