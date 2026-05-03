@@ -98,7 +98,8 @@ Settings are stored at `~/Library/Application Support/sshgpu/config.json`:
 
 | Setting | Default | Description |
 |---------|---------|-------------|
-| `pollingInterval` | 3 | Seconds between data refreshes |
+| `pollingInterval` | 120 | Seconds between data refreshes |
+| `idleThreshold` | 30 | Minutes before GPU considered idle |
 | `idleUtilizationThreshold` | 5 | GPU utilization % below which is idle |
 | `notificationEnabled` | true | Enable macOS notifications |
 | `quietHoursStart` | "22:00" | Notification quiet hours start |
@@ -110,12 +111,22 @@ Settings are stored at `~/Library/Application Support/sshgpu/config.json`:
 ## Development
 
 ```bash
+# Clone and install
+git clone https://github.com/zhouzhengqd/sshgpu.git
+cd sshgpu
 npm install
-npm run dev          # Start dev server + Electron (hot reload)
-npm test             # Run tests (34 tests)
-npm run build        # Production build
-npm run build:main   # Build main process only (fast iteration)
-npm run package      # Package as .dmg
+
+# Development (hot reload)
+npm run dev
+
+# Run tests (34 tests)
+npm test
+
+# Production build
+npm run build
+
+# Package as .dmg (auto-runs build first)
+npm run package
 ```
 
 ### Architecture

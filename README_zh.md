@@ -98,7 +98,8 @@ npm run package
 
 | 设置 | 默认值 | 说明 |
 |------|--------|------|
-| `pollingInterval` | 3 | 数据刷新间隔（秒） |
+| `pollingInterval` | 120 | 数据刷新间隔（秒） |
+| `idleThreshold` | 30 | GPU 空闲判定时间（分钟） |
 | `idleUtilizationThreshold` | 5 | GPU 利用率低于此值视为空闲 |
 | `notificationEnabled` | true | 启用 macOS 通知 |
 | `quietHoursStart` | "22:00" | 免打扰开始时间 |
@@ -110,12 +111,22 @@ npm run package
 ## 开发
 
 ```bash
+# 克隆并安装
+git clone https://github.com/zhouzhengqd/sshgpu.git
+cd sshgpu
 npm install
-npm run dev          # 启动开发服务器 + Electron（热更新）
-npm test             # 运行测试（34 个测试用例）
-npm run build        # 生产构建
-npm run build:main   # 仅构建主进程（快速迭代）
-npm run package      # 打包为 .dmg
+
+# 开发模式（热更新）
+npm run dev
+
+# 运行测试（34 个测试用例）
+npm test
+
+# 生产构建
+npm run build
+
+# 打包为 .dmg（自动先执行构建）
+npm run package
 ```
 
 ### 架构
