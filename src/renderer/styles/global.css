@@ -632,6 +632,31 @@ section h4 {
   margin-top: 12px;
 }
 
+.settings-actions {
+  margin: 16px 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.save-btn {
+  padding: 8px 24px;
+  background: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.save-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.save-btn:not(:disabled):hover {
+  opacity: 0.9;
+}
+
 /* Tasks section header with tabs */
 .tasks-header {
   display: flex;

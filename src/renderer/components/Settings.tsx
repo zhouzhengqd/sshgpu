@@ -4,6 +4,8 @@ import { AppConfig, ManualServerConfig } from '@shared/types';
 export function Settings() {
   const [config, setConfig] = useState<AppConfig | null>(null);
   const [editingServer, setEditingServer] = useState<ManualServerConfig | null>(null);
+  const [pendingChanges, setPendingChanges] = useState<Partial<AppConfig>>({});
+  const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     window.api.getConfig().then(setConfig);
@@ -11,10 +13,23 @@ export function Settings() {
 
   if (!config) return <div>Loading...</div>;
 
-  const handleSave = async (updates: Partial<AppConfig>) => {
-    await window.api.updateConfig(updates);
+  const handleChange = (updates: Partial<AppConfig>) => {
+    setPendingChanges((prev) => ({ ...prev, ...updates }));
+    setSaved(false);
+  };
+
+  const handleSaveAll = async () => {
+    if (Object.keys(pendingChanges).length === 0) return;
+    await window.api.updateConfig(pendingChanges);
     const updated = await window.api.getConfig();
     setConfig(updated);
+    setPendingChanges({});
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  const currentValue = <K extends keyof AppConfig>(key: K): AppConfig[K] => {
+    return (pendingChanges[key] as AppConfig[K]) ?? config[key];
   };
 
   const handleDeleteServer = async (serverId: string) => {
@@ -35,6 +50,8 @@ export function Settings() {
     setEditingServer(null);
   };
 
+  const hasChanges = Object.keys(pendingChanges).length > 0;
+
   return (
     <div className="settings">
       <h2>SSHGPU Settings</h2>
@@ -44,8 +61,8 @@ export function Settings() {
         <div className="setting-row">
           <label>Theme</label>
           <select
-            value={config.theme || 'system'}
-            onChange={(e) => handleSave({ theme: e.target.value as 'system' | 'light' | 'dark' })}
+            value={currentValue('theme') || 'system'}
+            onChange={(e) => handleChange({ theme: e.target.value as 'system' | 'light' | 'dark' })}
           >
             <option value="system">System</option>
             <option value="light">Light</option>
@@ -56,23 +73,23 @@ export function Settings() {
           <label>Polling Interval (seconds)</label>
           <input
             type="number"
-            value={config.pollingInterval}
-            onChange={(e) => handleSave({ pollingInterval: parseInt(e.target.value) })}
+            value={currentValue('pollingInterval')}
+            onChange={(e) => handleChange({ pollingInterval: parseInt(e.target.value) })}
           />
         </div>
         <div className="setting-row">
           <label>Idle Threshold (minutes)</label>
           <input
             type="number"
-            value={config.idleThreshold}
-            onChange={(e) => handleSave({ idleThreshold: parseInt(e.target.value) })}
+            value={currentValue('idleThreshold')}
+            onChange={(e) => handleChange({ idleThreshold: parseInt(e.target.value) })}
           />
         </div>
         <div className="setting-row">
           <label>Terminal App</label>
           <select
-            value={config.terminalApp}
-            onChange={(e) => handleSave({ terminalApp: e.target.value as any })}
+            value={currentValue('terminalApp')}
+            onChange={(e) => handleChange({ terminalApp: e.target.value as any })}
           >
             <option value="Terminal.app">Terminal.app</option>
             <option value="iTerm2">iTerm2</option>
@@ -86,8 +103,8 @@ export function Settings() {
           <label>
             <input
               type="checkbox"
-              checked={config.notificationEnabled}
-              onChange={(e) => handleSave({ notificationEnabled: e.target.checked })}
+              checked={currentValue('notificationEnabled')}
+              onChange={(e) => handleChange({ notificationEnabled: e.target.checked })}
             />
             Enable notifications
           </label>
@@ -97,14 +114,14 @@ export function Settings() {
           <div className="quiet-hours">
             <input
               type="time"
-              value={config.quietHoursStart || '22:00'}
-              onChange={(e) => handleSave({ quietHoursStart: e.target.value })}
+              value={currentValue('quietHoursStart') || '22:00'}
+              onChange={(e) => handleChange({ quietHoursStart: e.target.value })}
             />
             <span>to</span>
             <input
               type="time"
-              value={config.quietHoursEnd || '08:00'}
-              onChange={(e) => handleSave({ quietHoursEnd: e.target.value })}
+              value={currentValue('quietHoursEnd') || '08:00'}
+              onChange={(e) => handleChange({ quietHoursEnd: e.target.value })}
             />
           </div>
         </div>
@@ -114,8 +131,8 @@ export function Settings() {
             type="number"
             min="0"
             max="100"
-            value={config.idleUtilizationThreshold ?? 5}
-            onChange={(e) => handleSave({ idleUtilizationThreshold: parseInt(e.target.value) })}
+            value={currentValue('idleUtilizationThreshold') ?? 5}
+            onChange={(e) => handleChange({ idleUtilizationThreshold: parseInt(e.target.value) })}
           />
         </div>
         <div className="setting-row">
@@ -123,8 +140,8 @@ export function Settings() {
           <input
             type="text"
             placeholder="https://oapi.dingtalk.com/robot/send?access_token=..."
-            value={config.dingtalkWebhook || ''}
-            onChange={(e) => handleSave({ dingtalkWebhook: e.target.value })}
+            value={currentValue('dingtalkWebhook') || ''}
+            onChange={(e) => handleChange({ dingtalkWebhook: e.target.value })}
             style={{ flex: 1 }}
           />
         </div>
@@ -132,6 +149,16 @@ export function Settings() {
           GPU空闲且显存释放时发送钉钉群通知。留空则不发送。
         </p>
       </section>
+
+      <div className="settings-actions">
+        <button
+          className="save-btn"
+          onClick={handleSaveAll}
+          disabled={!hasChanges}
+        >
+          {saved ? 'Saved!' : 'Save'}
+        </button>
+      </div>
 
       <section>
         <h3>Manual Servers</h3>
